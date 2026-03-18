@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CITAWIN - RESULT & LIVE DRAW</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ========== GLOBAL STYLES ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #050505;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 2px solid #f5c542;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 9999;
+            box-shadow: 0 4px 15px rgba(245, 197, 66, 0.2);
+        }
+
+        .nav-btn {
+            background: linear-gradient(145deg, #1a1a1a, #000);
+            border: 2px solid #f5c542;
+            color: #f5c542;
+            padding: 12px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #f5c542;
+            color: #000;
+            box-shadow: 0 0 15px rgba(245, 197, 66, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .tool-container {
+            display: none;
+            padding-top: 70px;
+            min-height: 100vh;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tool-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== RESULT STYLES (From result.html) ========== */
+        :root {
+            --bg: #050a15;
+            --bg-secondary: #0a1020;
+            --bg-card: rgba(15, 23, 42, 0.7);
+            --bg-input: rgba(30, 41, 59, 0.5);
+            --fg: #f1f5f9;
+            --muted: #64748b;
+            --border: rgba(71, 85, 105, 0.4);
+            --accent: #f59e0b;
+            --accent-hover: #fbbf24;
+            --accent-glow: rgba(245, 158, 11, 0.4);
+            --primary: #10b981;
+            --primary-hover: #34d399;
+            --primary-glow: rgba(16, 185, 129, 0.4);
+            --cyan: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.4);
+        }
+
+        /* Animated Background for Result */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #050a15 0%, #0a1525 50%, #051020 100%);
+        }
+        
+        .bg-gradient-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
+            top: -200px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+        
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%);
+            top: 50%;
+            right: -150px;
+            animation-delay: -5s;
+        }
+        
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+            bottom: -100px;
+            left: 30%;
+            animation-delay: -10s;
+        }
+        
+        .orb-4 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+            top: 30%;
+            left: 20%;
+            animation-delay: -15s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.02); }
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particle-rise 8s ease-in-out infinite;
+        }
+        
+        @keyframes particle-rise {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.2; }
+            100% { opacity: 0; transform: translateY(-20vh) scale(1); }
+        }
+        
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: linear-gradient(rgba(71, 85, 105, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(71, 85, 105, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card-hover:hover {
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 60px rgba(245, 158, 11, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 3px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--primary-hover) 0%, var(--accent-hover) 100%);
+        }
+        
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .animate-slide-up { animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-slide-left { animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-slide-right { animation: slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        
+        .market-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .market-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        .market-item:hover::before { left: 100%; }
+        .market-item:hover {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+        
+        .checkbox-custom {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        .checkbox-custom::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%);
+            border-radius: 4px;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .checkbox-custom.checkbox-marked {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .checkbox-custom.checkbox-marked::before {
+            width: 100%;
+            height: 100%;
+        }
+        .checkbox-custom.checkbox-marked::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 7px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2.5px 2.5px 0;
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+        
+        .shio-ref {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .shio-ref::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.5;
+        }
+        .shio-ref-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(71, 85, 105, 0.2);
+            transition: all 0.3s ease;
+        }
+        .shio-ref-item:hover {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+            transform: translateX(4px);
+        }
+        .shio-ref-item span:first-child {
+            font-size: 16px;
+            filter: grayscale(0.3);
+            transition: filter 0.3s ease;
+        }
+        .shio-ref-item:hover span:first-child {
+            filter: grayscale(0);
+            transform: scale(1.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #059669 50%, #047857 100%);
+            background-size: 200% 200%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-primary:hover {
+            background-position: 100% 0;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4), 0 0 60px rgba(16, 185, 129, 0.2);
+        }
+        .btn-primary:hover::before { left: 100%; }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+        
+        .input-field {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .input-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1), 0 0 30px rgba(245, 158, 11, 0.15);
+            outline: none;
+            background: rgba(30, 41, 59, 0.7);
+        }
+        .input-prize {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .modal-content {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 16, 32, 0.98) 100%);
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 100px rgba(245, 158, 11, 0.1);
+        }
+        
+        .edit-btn {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .market-item:hover .edit-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .output-area {
+            background: linear-gradient(135deg, rgba(5, 10, 21, 0.9) 0%, rgba(10, 16, 32, 0.8) 100%);
+            border: 1px dashed var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .output-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(245, 158, 11, 0.03) 50%, transparent 100%);
+            animation: shimmer 3s linear infinite;
+            background-size: 200% 100%;
+            pointer-events: none;
+        }
+        
+        .header-glow { text-shadow: 0 0 40px rgba(16, 185, 129, 0.5); }
+        .icon-glow-primary { filter: drop-shadow(0 0 8px var(--primary-glow)); }
+        .icon-glow-accent { filter: drop-shadow(0 0 8px var(--accent-glow)); }
+        
+        .selected-market-item {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.4) 100%);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            transition: all 0.3s ease;
+        }
+        .selected-market-item:hover {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(30, 41, 59, 0.4) 100%);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        
+        .footer-text {
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--cyan));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+        
+        .toast-container {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 60px rgba(16, 185, 129, 0.2);
+        }
+        
+        .card-header { position: relative; }
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+        
+        .shio-display {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.4) 100%);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .shio-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent), var(--primary));
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        @media (max-width: 1024px) { .orb { opacity: 0.3; } }
+
+        /* ========== LIVE DRAW STYLES (From livedraw.html) ========== */
+        :root {
+            --ld-primary-gold: #F5C542;
+            --ld-dark-bg: #050505;
+            --ld-border-color: rgba(245, 197, 66, 0.3);
+        }
+
+        .app-container-ld {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            background: url('https://i.imgur.com/SKILTe6.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+        .app-container-ld::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 0;
+        }
+
+        .sidebar-left-ld {
+            width: 280px;
+            min-width: 280px;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.98);
+            border-right: 1px solid var(--ld-border-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        .sidebar-hidden-ld { width: 0; min-width: 0; overflow: hidden; border: none; }
+
+        .sidebar-header-ld {
+            padding: 20px;
+            background: #000;
+            border-bottom: 2px solid var(--ld-primary-gold);
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .sidebar-header-ld h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--ld-primary-gold);
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .sidebar-content-ld {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .sidebar-content-ld::-webkit-scrollbar { width: 4px; }
+        .sidebar-content-ld::-webkit-scrollbar-thumb { background: var(--ld-primary-gold); border-radius: 10px; }
+
+        .btn-add-market-ld {
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            border: 1px solid var(--ld-primary-gold); border-radius: 8px;
+            background: transparent; color: var(--ld-primary-gold);
+            font-weight: 700; cursor: pointer; transition: all 0.3s;
+            text-transform: uppercase; font-size: 12px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-add-market-ld:hover { background: rgba(245, 197, 66, 0.1); }
+        
+        .backup-btn-group {
+            display: flex; gap: 10px; margin-bottom: 15px;
+        }
+        .backup-btn {
+            flex: 1; padding: 10px; border-radius: 8px; border: none;
+            font-weight: 700; font-size: 11px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .btn-export-ld { background: #0088ff; color: white; }
+        .btn-import-ld { background: #28a745; color: white; }
+
+        .market-list-ld { display: flex; flex-direction: column; gap: 8px; }
+        .market-item-ld {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px; overflow: hidden; transition: all 0.3s;
+        }
+        .market-item-ld:hover { background: rgba(255, 255, 255, 0.05); }
+        .market-item-ld.active-ld {
+            background: rgba(245, 197, 66, 0.05);
+            border: 1px solid var(--ld-primary-gold);
+        }
+        .market-btn-ld {
+            width: 100%; padding: 12px 15px;
+            background: transparent; border: none;
+            color: #fff; text-align: left; font-size: 14px;
+            font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .market-item-ld.active-ld .market-btn-ld { color: var(--ld-primary-gold); }
+        
+        .m-icon-ld {
+            width: 35px; height: 35px;
+            background: #111; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden; flex-shrink: 0;
+        }
+        .m-icon-ld img { width: 100%; height: 100%; object-fit: cover; }
+        .m-name-ld { flex: 1; letter-spacing: 0.5px; }
+
+        .m-actions-ld {
+            position: absolute; right: 8px; top: 50%;
+            transform: translateY(-50%);
+            display: flex; gap: 4px; opacity: 0; transition: opacity 0.2s;
+        }
+        .market-item-ld:hover .m-actions-ld { opacity: 1; }
+        .m-btn-small-ld {
+            width: 22px; height: 22px; border-radius: 50%;
+            border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; color: white;
+        }
+        .btn-upload-ld { background: #2e86de; }
+        .btn-delete-ld { background: #ff4757; }
+
+        .main-content-right-ld {
+            flex: 1; height: 100%;
+            display: flex; flex-direction: column;
+            position: relative; z-index: 10; padding: 20px;
+        }
+        .live-header-ld {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; padding: 0 10px;
+        }
+        .live-title-ld {
+            font-family: 'Orbitron', sans-serif; font-size: 24px;
+            color: var(--ld-primary-gold); text-transform: uppercase;
+            letter-spacing: 2px; display: flex; align-items: center; gap: 10px; font-weight: 700;
+        }
+        .live-title-ld i { color: #ff4757; font-size: 14px; }
+        .live-controls-ld { display: flex; gap: 10px; align-items: center; }
+        .current-market-badge-ld {
+            background: rgba(255,255,255,0.1); border: 1px solid var(--ld-primary-gold);
+            padding: 8px 20px; border-radius: 30px; color: #fff;
+            font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-action-ld {
+            padding: 8px 15px; border-radius: 6px; border: none;
+            cursor: pointer; font-weight: 700; font-size: 12px;
+            display: flex; align-items: center; gap: 5px; transition: 0.2s; text-transform: uppercase;
+        }
+        .btn-refresh-ld { background: #28a745; color: white; }
+        .btn-edit-ld { background: #ffc107; color: #000; }
+        .btn-toggle-ld { background: #333; color: white; border: 1px solid #444; }
+
+        .iframe-box-ld {
+            flex: 1; background: #000; border-radius: 15px;
+            border: 2px solid var(--ld-primary-gold); overflow: hidden;
+            position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column;
+        }
+        .iframe-header-overlay-ld {
+            position: absolute; top: 0; left: 0; right: 0;
+            padding: 8px 15px; background: rgba(0,0,0,0.6);
+            display: flex; justify-content: space-between; z-index: 5;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .iframe-brand-ld { font-size: 10px; color: #aaa; }
+        .iframe-brand-ld span { color: var(--ld-primary-gold); font-weight: bold; }
+        #ld_liveFrame {
+            width: 100%; height: 100%; border: none; margin-top: 30px;
+        }
+        .loading-screen-ld {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 10;
+            transition: opacity 0.3s;
+        }
+        .loading-screen-ld.hidden-ld { opacity: 0; pointer-events: none; }
+        .spinner-ld {
+            width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: var(--ld-primary-gold); border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text-ld { margin-top: 10px; color: var(--ld-primary-gold); font-size: 12px; letter-spacing: 1px; }
+
+        .ld-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 100;
+            justify-content: center; align-items: center;
+        }
+        .ld-modal-content {
+            background: #0a0a0a; border: 1px solid var(--ld-primary-gold);
+            padding: 25px; width: 90%; max-width: 450px;
+            border-radius: 10px; box-shadow: 0 0 20px rgba(245, 197, 66, 0.2);
+        }
+        .ld-modal-title {
+            color: var(--ld-primary-gold); font-size: 16px; margin-bottom: 20px;
+            text-transform: uppercase; font-weight: 700; letter-spacing: 1px; text-align: center;
+        }
+        .ld-input-group { margin-bottom: 15px; }
+        .ld-input-style {
+            width: 100%; padding: 10px; background: #111; border: 1px solid #333;
+            border-radius: 5px; color: white; font-size: 14px;
+        }
+        .ld-input-style:focus { border-color: var(--ld-primary-gold); outline: none; }
+        .ld-btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .ld-btn-modal {
+            flex: 1; padding: 10px; border: none; border-radius: 5px;
+            cursor: pointer; font-weight: 600; font-size: 13px;
+        }
+        .ld-btn-save { background: var(--ld-primary-gold); color: #000; }
+        .ld-btn-cancel { background: #333; color: #fff; }
+
+        .ld-emoji-grid {
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+            margin-bottom: 10px; max-height: 100px; overflow-y: auto;
+            padding: 5px; background: #111; border-radius: 5px;
+        }
+        .ld-emoji-item {
+            font-size: 20px; text-align: center; cursor: pointer;
+            padding: 5px; border-radius: 4px; transition: 0.2s;
+        }
+        .ld-emoji-item:hover { background: #222; }
+        .ld-emoji-item.selected-ld { background: rgba(245, 197, 66, 0.2); border: 1px solid var(--ld-primary-gold); }
+        
+        .ld-upload-section {
+            margin-top: 10px; padding-top: 10px; border-top: 1px solid #333;
+            text-align: center;
+        }
+        .ld-file-input { display: none; }
+        .ld-upload-label {
+            display: inline-block; padding: 8px 15px; background: #222;
+            border: 1px dashed #555; color: #aaa; border-radius: 5px;
+            cursor: pointer; font-size: 12px; transition: 0.2s;
+        }
+        .ld-upload-label:hover { border-color: var(--ld-primary-gold); color: #fff; }
+        .ld-preview-img {
+            max-width: 60px; max-height: 60px; margin-top: 10px;
+            border-radius: 50%; object-fit: cover; border: 2px solid var(--ld-primary-gold);
+            display: none;
+        }
+
+        .notification {
+            position: fixed; top: 90px; right: 20px; background: linear-gradient(135deg, #00ff88, #00cc77); color: #000;
+            padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: none; z-index: 10000;
+            font-weight: bold; animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .sidebar-left-ld { position: absolute; left: 0; z-index: 20; box-shadow: 5px 0 20px rgba(0,0,0,0.8); }
+            .sidebar-hidden-ld { transform: translateX(-100%); }
+            .live-title-ld { font-size: 18px; }
+            .current-market-badge-ld { display: none; }
+        }
+
+        /* Custom for result container */
+        #tool-result .max-w-7xl {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION BAR (2 Tombol) -->
+    <nav class="main-nav">
+        <button class="nav-btn active" onclick="showTool('tool-result')">RESULT</button>
+        <button class="nav-btn" onclick="showTool('tool-livedraw')">LIVE DRAW</button>
+    </nav>
+
+    <!-- NOTIFICATION CONTAINER (Global) -->
+    <div id="notification" class="notification">Notifikasi</div>
+
+    <!-- =========================================
+         TOOL 1: RESULT (From result.html)
+         ========================================= -->
+    <div id="tool-result" class="tool-container active">
+        <!-- Animated Background for Result -->
+        <div class="bg-animated"></div>
+        <div class="bg-gradient-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+            <div class="orb orb-4"></div>
+        </div>
+        <div class="grid-pattern"></div>
+        <div class="particles" id="particles"></div>
+        
+        <div class="min-h-screen p-4 lg:p-6 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <header class="text-center mb-10 animate-slide-up" style="animation-delay: 0.1s; opacity: 0;">
+                    <div class="inline-block mb-4">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-emerald-500 to-amber-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 animate-pulse-glow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl lg:text-4xl font-bold mb-3 header-glow">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-300 to-emerald-400">Generator</span> 
+                        <span class="text-white">Hasil Pengeluaran</span>
+                    </h1>
+                    <p class="text-[var(--muted)] text-sm tracking-wide">
+                        Shio berdasarkan 2 digit terakhir Prize 1 - 
+                        <span class="text-[var(--accent)] font-semibold">TABEL SHIO</span>
+                    </p>
+                </header>
+                
+                <div class="grid lg:grid-cols-12 gap-6">
+                    <!-- Left Column - Pasaran List -->
+                    <div class="lg:col-span-4 animate-slide-left" style="animation-delay: 0.2s; opacity: 0;">
+                        <div class="glass-card glass-card-hover rounded-2xl sticky top-4">
+                            <div class="p-5 card-header">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400 icon-glow-primary">
+                                                <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                                <path d="M12 11h4"></path>
+                                                <path d="M12 16h4"></path>
+                                                <path d="M8 11h.01"></path>
+                                                <path d="M8 16h.01"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="font-semibold text-lg">Pasaran</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <button onclick="openAddModal()" class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:scale-110 transition-all duration-300" title="Tambah Pasaran">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M5 12h14"></path>
+                                                <path d="M12 5v14"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="importMarkets()" class="p-2.5 rounded-xl text-[var(--muted)] hover:text-[var(--fg)] hover:bg-white/5 transition-all duration-300 hover:scale-110" title="Import JSON">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="1"></circle>
+                                                <circle cx="12" cy="5" r="1"></circle>
+                                                <circle cx="12" cy="19" r="1"></circle>
+                                            </svg>
+                                        </button>
+                                        <input type="file" id="importFile" accept=".json" class="hidden" onchange="handleImport(event)">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="h-[60vh] overflow-y-auto scrollbar-thin" id="marketList"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <!-- Selected Markets -->
+                        <div class="glass-card glass-card-hover rounded-2xl animate-slide-right" style="animation-delay: 0.3s; opacity: 0;">
+                            <div class="p-5 card-header">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400 icon-glow-accent">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="font-semibold text-lg">Pasaran Terpilih</span>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <p class="text-[var(--muted)] text-sm text-center py-4" id="selectedMarketsText">Belum ada pasaran ditandai</p>
+                                <div id="selectedMarketsList" class="space-y-2 hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Input Hasil -->
+                        <div class="glass-card glass-card-hover rounded-2xl animate-slide-right" style="animation-delay: 0.4s; opacity: 0;">
+                            <div class="p-5 card-header">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-600/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400 icon-glow-accent">
+                                            <path d="M12 20h9"></path>
+                                            <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="font-semibold text-lg">Input Hasil</span>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <div class="grid md:grid-cols-2 gap-4 mb-5">
+                                    <div class="space-y-2">
+                                        <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                            Nama Pasaran
+                                        </label>
+                                        <input type="text" id="inputPasaran" class="input-field w-full h-12 rounded-xl px-4 text-sm" placeholder="Pilih atau ketik manual">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                                            Tanggal
+                                        </label>
+                                        <input type="date" id="inputTanggal" class="input-field w-full h-12 rounded-xl px-4 text-sm">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-4 mb-6">
+                                    <div class="space-y-2">
+                                        <label class="text-xs uppercase tracking-wider text-amber-400 font-semibold flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                                            Prize 1
+                                        </label>
+                                        <input type="text" id="prize1" class="input-field w-full h-16 rounded-xl text-center input-prize text-amber-400" placeholder="XXXX" maxlength="4" oninput="updateShio()">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-xs uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                            Prize 2
+                                        </label>
+                                        <input type="text" id="prize2" class="input-field w-full h-16 rounded-xl text-center input-prize text-slate-400" placeholder="XXXX" maxlength="4">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-xs uppercase tracking-wider text-orange-400 font-semibold flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+                                            Prize 3
+                                        </label>
+                                        <input type="text" id="prize3" class="input-field w-full h-16 rounded-xl text-center input-prize text-orange-400" placeholder="XXXX" maxlength="4">
+                                    </div>
+                                </div>
+                                
+                                <div class="shio-ref mb-5">
+                                    <div class="shio-ref-item"><span>&#128014;</span><span>01 13 25 37 49 61 73 85 97</span></div>
+                                    <div class="shio-ref-item"><span>&#128013;</span><span>02 14 26 38 50 62 74 86 98</span></div>
+                                    <div class="shio-ref-item"><span>&#128050;</span><span>03 15 27 39 51 63 75 87 99</span></div>
+                                    <div class="shio-ref-item"><span>&#128048;</span><span>04 16 28 40 52 64 76 88 00</span></div>
+                                    <div class="shio-ref-item"><span>&#128005;</span><span>05 17 29 41 53 65 77 89</span></div>
+                                    <div class="shio-ref-item"><span>&#128002;</span><span>06 18 30 42 54 66 78 90</span></div>
+                                    <div class="shio-ref-item"><span>&#128000;</span><span>07 19 31 43 55 67 79 91</span></div>
+                                    <div class="shio-ref-item"><span>&#128022;</span><span>08 20 32 44 56 68 80 92</span></div>
+                                    <div class="shio-ref-item"><span>&#128021;</span><span>09 21 33 45 57 69 81 93</span></div>
+                                    <div class="shio-ref-item"><span>&#128020;</span><span>10 22 34 46 58 70 82 94</span></div>
+                                    <div class="shio-ref-item"><span>&#128018;</span><span>11 23 35 47 59 71 83 95</span></div>
+                                    <div class="shio-ref-item"><span>&#128016;</span><span>12 24 36 48 60 72 84 96</span></div>
+                                </div>
+                                
+                                <div class="mb-5 shio-display rounded-xl p-4" id="shioDisplay">
+                                    <span class="text-xs text-[var(--muted)]">Shio: </span>
+                                    <span class="font-semibold text-[var(--accent)] text-lg" id="shioResult">-</span>
+                                </div>
+                                
+                                <button onclick="generateOutput()" class="btn-primary w-full py-4 rounded-xl font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path>
+                                        <path d="M20 3v4"></path>
+                                        <path d="M22 5h-4"></path>
+                                        <path d="M4 17v2"></path>
+                                        <path d="M5 18H3"></path>
+                                    </svg>
+                                    Generate Output
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Output -->
+                        <div class="glass-card glass-card-hover rounded-2xl animate-slide-right" style="animation-delay: 0.5s; opacity: 0;">
+                            <div class="p-5 card-header">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-600/20 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400 icon-glow-primary">
+                                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                                                <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                                                <path d="M10 9H8"></path>
+                                                <path d="M16 13H8"></path>
+                                                <path d="M16 17H8"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="font-semibold text-lg">Output (Siap Copy)</span>
+                                    </div>
+                                    <button onclick="copyOutput()" class="btn-secondary flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                                            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                                        </svg>
+                                        Copy Text
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <div id="outputArea" class="output-area rounded-xl p-6 font-mono text-sm leading-relaxed whitespace-pre-wrap min-h-[140px]">
+                                    <span class="text-[var(--muted)]">Output akan muncul di sini...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <footer class="text-center mt-16 pb-10 animate-slide-up" style="animation-delay: 0.6s; opacity: 0;">
+                    <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500/10 via-amber-500/10 to-cyan-500/10 border border-white/5">
+                        <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                        <p class="text-base font-bold tracking-widest footer-text">BUATAN R.S.KENNEDY</p>
+                        <div class="w-2 h-2 rounded-full bg-amber-400 animate-pulse" style="animation-delay: 0.5s;"></div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================
+         TOOL 2: LIVE DRAW (From livedraw.html)
+         ========================================= -->
+    <div id="tool-livedraw" class="tool-container">
+        <div class="app-container-ld">
+            <!-- Sidebar Kiri -->
+            <aside class="sidebar-left-ld" id="ld_sidebar">
+                <div class="sidebar-header-ld">
+                    <h2>Jenis Pasaran</h2>
+                </div>
+                <div class="sidebar-content-ld">
+                    <button class="btn-add-market-ld" onclick="ld_openModal('ld_addModal')"><i class="fas fa-plus"></i> Tambah Pasaran</button>
+                    
+                    <div class="backup-btn-group">
+                        <button class="backup-btn btn-export-ld" onclick="ld_exportData()"><i class="fas fa-download"></i> Export</button>
+                        <button class="backup-btn btn-import-ld" onclick="document.getElementById('ld_importFile').click()"><i class="fas fa-upload"></i> Import</button>
+                        <input type="file" id="ld_importFile" accept=".json" style="display:none" onchange="ld_importData(this)">
+                    </div>
+
+                    <div class="market-list-ld" id="ld_marketList"></div>
+                </div>
+            </aside>
+
+            <!-- Konten Kanan -->
+            <main class="main-content-right-ld">
+                <div class="live-header-ld">
+                    <div>
+                        <div class="live-title-ld"><i class="fas fa-circle"></i> LIVE DRAW</div>
+                        <div style="font-size: 12px; color: #aaa; margin-top: 2px; letter-spacing: 1px;">Real-time Result</div>
+                    </div>
+                    
+                    <div class="live-controls-ld">
+                        <div class="current-market-badge-ld">
+                            <i class="fas fa-trophy"></i>
+                            <span id="ld_displayMarket">Pilih Pasaran</span>
+                        </div>
+                        <button class="btn-action-ld btn-toggle-ld" onclick="ld_toggleSidebar()"><i class="fas fa-bars"></i></button>
+                        <button class="btn-action-ld btn-refresh-ld" onclick="ld_refreshLive()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                        <button class="btn-action-ld btn-edit-ld" onclick="ld_openModal('ld_editModal')"><i class="fas fa-edit"></i> Edit</button>
+                    </div>
+                </div>
+
+                <div class="iframe-box-ld">
+                    <div class="iframe-header-overlay-ld">
+                        <div class="iframe-brand-ld">POWERED BY <span>R S.KENNEDY</span></div>
+                        <div class="iframe-brand-ld" id="ld_displayUrlSmall">-</div>
+                    </div>
+                    <div class="loading-screen-ld" id="ld_loading">
+                        <div class="spinner-ld"></div>
+                        <div class="loading-text-ld">MEMUAT DATA...</div>
+                    </div>
+                    <iframe id="ld_liveFrame" src="" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                </div>
+            </main>
+        </div>
+
+        <!-- Modal Tambah -->
+        <div class="ld-modal-overlay" id="ld_addModal">
+            <div class="ld-modal-content">
+                <div class="ld-modal-title">Tambah Pasaran Baru</div>
+                <div class="ld-input-group">
+                    <input type="text" id="ld_inputNama" class="ld-input-style" placeholder="Nama Pasaran (Contoh: HOKIDRAW)">
+                </div>
+                <div class="ld-input-group">
+                    <input type="text" id="ld_inputLink" class="ld-input-style" placeholder="Link Live Draw (https://...)">
+                </div>
+                <div class="ld-input-group">
+                    <label style="font-size: 12px; color: #aaa;">Pilih Ikon Emoji:</label>
+                    <div class="ld-emoji-grid" id="ld_emojiGridAdd"></div>
+                </div>
+                
+                <div class="ld-upload-section">
+                    <label style="font-size: 12px; color: #aaa;">Atau Upload Gambar:</label><br>
+                    <input type="file" id="ld_fileInputAdd" class="ld-file-input" accept="image/*" onchange="ld_previewAddImage(this)">
+                    <label for="ld_fileInputAdd" class="ld-upload-label"><i class="fas fa-upload"></i> Pilih Gambar</label>
+                    <img id="ld_previewAddImg" class="ld-preview-img" src="" alt="Preview">
+                </div>
+
+                <div class="ld-btn-group">
+                    <button class="ld-btn-modal ld-btn-cancel" onclick="ld_closeModal('ld_addModal')">Batal</button>
+                    <button class="ld-btn-modal ld-btn-save" onclick="ld_saveNewMarket()">Simpan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit Link -->
+        <div class="ld-modal-overlay" id="ld_editModal">
+            <div class="ld-modal-content">
+                <div class="ld-modal-title">Edit Link Live</div>
+                <div class="ld-input-group">
+                    <input type="text" id="ld_editLinkInput" class="ld-input-style" placeholder="Link URL baru...">
+                </div>
+                <div class="ld-btn-group">
+                    <button class="ld-btn-modal ld-btn-cancel" onclick="ld_closeModal('ld_editModal')">Batal</button>
+                    <button class="ld-btn-modal ld-btn-save" onclick="ld_saveEditLink()">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Ganti Icon -->
+        <div class="ld-modal-overlay" id="ld_iconModal">
+            <div class="ld-modal-content">
+                <div class="ld-modal-title">Ganti Ikon Pasaran</div>
+                <div class="ld-input-group">
+                    <label style="font-size: 12px; color: #aaa;">Pilih Emoji Baru:</label>
+                    <div class="ld-emoji-grid" id="ld_emojiGridEdit"></div>
+                </div>
+                
+                <div class="ld-upload-section">
+                    <label style="font-size: 12px; color: #aaa;">Atau Upload Gambar Baru:</label><br>
+                    <input type="file" id="ld_fileInputEdit" class="ld-file-input" accept="image/*" onchange="ld_previewEditImage(this)">
+                    <label for="ld_fileInputEdit" class="ld-upload-label"><i class="fas fa-upload"></i> Pilih Gambar</label>
+                    <img id="ld_previewEditImg" class="ld-preview-img" src="" alt="Preview">
+                </div>
+
+                <div class="ld-btn-group">
+                    <button class="ld-btn-modal ld-btn-cancel" onclick="ld_closeModal('ld_iconModal')">Batal</button>
+                    <button class="ld-btn-modal ld-btn-save" onclick="ld_saveIconChanges()">Simpan Ikon</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        // =========================================
+        // GLOBAL FUNCTIONS
+        // =========================================
+        function showTool(toolId) {
+            document.querySelectorAll('.tool-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(toolId).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Trigger resize for iframe if needed
+            if (toolId === 'tool-livedraw') {
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 100);
+            }
+        }
+
+        function showNotification(msg) { 
+            const n = document.getElementById('notification'); 
+            n.innerText = msg; 
+            n.style.display = 'block'; 
+            setTimeout(() => { n.style.display = 'none'; }, 3000); 
+        }
+
+        // =========================================
+        // RESULT SCRIPT (From result.html)
+        // =========================================
+        let markets = [
+            { id: 1, name: "HOKIDRAW 8", time: "08:00", selected: false },
+            { id: 2, name: "CALIFORNIA", time: "08:25", selected: false },
+            { id: 3, name: "FLORIDAEVE", time: "08:35", selected: false },
+            { id: 4, name: "OREGON09", time: "08:50", selected: false },
+            { id: 5, name: "HOKIDRAW 9", time: "09:00", selected: false },
+            { id: 6, name: "BANGKOK 0930", time: "09:00", selected: false },
+            { id: 7, name: "NEWYORKEVE", time: "09:25", selected: false },
+            { id: 8, name: "KENTUCKYEVE", time: "09:45", selected: false },
+            { id: 9, name: "HOKIDRAW 10", time: "10:00", selected: false },
+            { id: 10, name: "CAROLINAEVE", time: "10:17", selected: false },
+            { id: 11, name: "HOKIDRAW 11", time: "11:00", selected: false },
+            { id: 12, name: "CHELSEA 11", time: "11:00", selected: false },
+            { id: 13, name: "TOTOCAMBODIA", time: "11:00", selected: false },
+            { id: 14, name: "HOKIDRAW 12", time: "12:00", selected: false },
+            { id: 15, name: "BULLSEYE", time: "12:00", selected: false },
+            { id: 16, name: "POIPET12", time: "12:15", selected: false },
+            { id: 17, name: "OREGON12", time: "11:50", selected: false },
+            { id: 18, name: "TOTOMACAU SIANG", time: "13:00", selected: false },
+            { id: 19, name: "HOKIDRAW 13", time: "13:00", selected: false },
+            { id: 20, name: "SYDNEY", time: "13:35", selected: false },
+            { id: 21, name: "JAKARTA POOLS I", time: "13:55", selected: false },
+            { id: 22, name: "HOKIDRAW 14", time: "14:00", selected: false },
+            { id: 23, name: "BRUNEI 14", time: "14:30", selected: false },
+            { id: 24, name: "HOKIDRAW 15", time: "15:00", selected: false },
+            { id: 25, name: "CHELSEA 15", time: "15:00", selected: false },
+            { id: 26, name: "TOTOMACAU 5 D SORE", time: "15:13", selected: false },
+            { id: 27, name: "POIPET15", time: "15:15", selected: false },
+            { id: 28, name: "TOTOMALI1530", time: "15:15", selected: false },
+            { id: 29, name: "TOTOMACAU SORE", time: "16:00", selected: false },
+            { id: 30, name: "HOKIDRAW 16", time: "16:00", selected: false },
+            { id: 31, name: "HUAHIN 1630", time: "16:00", selected: false },
+            { id: 32, name: "KING KONG 4D", time: "11:00", selected: false },
+            { id: 33, name: "HOKIDRAW 17", time: "17:00", selected: false },
+            { id: 34, name: "SINGAPORE", time: "17:30", selected: false },
+            { id: 35, name: "HOKIDRAW 18", time: "18:00", selected: false },
+            { id: 36, name: "MAGNUM4D", time: "18:10", selected: false },
+            { id: 37, name: "TOTOMACAU MALAM I", time: "19:00", selected: false },
+            { id: 38, name: "HOKIDRAW 19", time: "19:00", selected: false },
+            { id: 39, name: "CHELSEA 19", time: "19:00", selected: false },
+            { id: 40, name: "POIPET19", time: "19:30", selected: false },
+            { id: 41, name: "HOKIDRAW 20", time: "20:00", selected: false },
+            { id: 42, name: "PCSO", time: "19:50", selected: false },
+            { id: 43, name: "TOTOMALI2030", time: "20:15", selected: false },
+            { id: 44, name: "HUAHIN 2100", time: "20:30", selected: false },
+            { id: 45, name: "HOKIDRAW 21", time: "21:00", selected: false },
+            { id: 46, name: "CHELSEA 21", time: "21:00", selected: false },
+            { id: 47, name: "TOTOMACAU 5 D MALAM", time: "21:15", selected: false },
+            { id: 48, name: "NEVADA", time: "21:15", selected: false },
+            { id: 49, name: "BRUNEI 21", time: "21:30", selected: false },
+            { id: 50, name: "TOTOMACAU MALAM II", time: "22:00", selected: false },
+            { id: 51, name: "HOKIDRAW 22", time: "22:00", selected: false },
+            { id: 52, name: "POIPET22", time: "22:30", selected: false },
+            { id: 53, name: "TOTOMACAU MALAM III", time: "23:00", selected: false },
+            { id: 54, name: "HOKIDRAW 23", time: "23:00", selected: false },
+            { id: 55, name: "HONGKONG", time: "23:00", selected: false },
+            { id: 56, name: "JAKARTA POOLS II", time: "23:30", selected: false },
+            { id: 57, name: "TOTOMALI2330", time: "23:15", selected: false },
+            { id: 58, name: "TOTOMACAU PAGI", time: "00:00", selected: false },
+            { id: 59, name: "HOKIDRAW 24", time: "00:00", selected: false },
+            { id: 60, name: "KENTUCKYMID", time: "00:05", selected: false },
+            { id: 61, name: "FLORIDAMID", time: "00:20", selected: false },
+            { id: 62, name: "HUAHIN 0100", time: "00:30", selected: false },
+            { id: 63, name: "HOKIDRAW 1", time: "01:00", selected: false },
+            { id: 64, name: "NEWYORKMID", time: "01:15", selected: false },
+            { id: 65, name: "BANGKOK 0130", time: "01:00", selected: false },
+            { id: 66, name: "CAROLINA DAY", time: "01:45", selected: false },
+            { id: 67, name: "HOKIDRAW 2", time: "02:00", selected: false },
+            { id: 68, name: "BRUNEI 02", time: "02:30", selected: false },
+            { id: 69, name: "OREGON03", time: "02:50", selected: false },
+            { id: 70, name: "HOKIDRAW 3", time: "03:00", selected: false },
+            { id: 71, name: "HOKIDRAW 4", time: "04:00", selected: false },
+            { id: 72, name: "HOKIDRAW 5", time: "05:00", selected: false },
+            { id: 73, name: "HOKIDRAW 6", time: "06:00", selected: false },
+            { id: 74, name: "OREGON06", time: "05:50", selected: false },
+            { id: 75, name: "HOKIDRAW 7", time: "07:00", selected: false }
+        ];
+        
+        let editingMarketId = null;
+        
+        const shioData = [
+            { emoji: "&#128014;", name: "Kuda", numbers: ["01", "13", "25", "37", "49", "61", "73", "85", "97"] },
+            { emoji: "&#128013;", name: "Ular", numbers: ["02", "14", "26", "38", "50", "62", "74", "86", "98"] },
+            { emoji: "&#128050;", name: "Naga", numbers: ["03", "15", "27", "39", "51", "63", "75", "87", "99"] },
+            { emoji: "&#128048;", name: "Kelinci", numbers: ["04", "16", "28", "40", "52", "64", "76", "88", "00"] },
+            { emoji: "&#128005;", name: "Harimau", numbers: ["05", "17", "29", "41", "53", "65", "77", "89"] },
+            { emoji: "&#128002;", name: "Kerbau", numbers: ["06", "18", "30", "42", "54", "66", "78", "90"] },
+            { emoji: "&#128000;", name: "Tikus", numbers: ["07", "19", "31", "43", "55", "67", "79", "91"] },
+            { emoji: "&#128022;", name: "Babi", numbers: ["08", "20", "32", "44", "56", "68", "80", "92"] },
+            { emoji: "&#128021;", name: "Anjing", numbers: ["09", "21", "33", "45", "57", "69", "81", "93"] },
+            { emoji: "&#128020;", name: "Ayam", numbers: ["10", "22", "34", "46", "58", "70", "82", "94"] },
+            { emoji: "&#128018;", name: "Monyet", numbers: ["11", "23", "35", "47", "59", "71", "83", "95"] },
+            { emoji: "&#128016;", name: "Kambing", numbers: ["12", "24", "36", "48", "60", "72", "84", "96"] }
+        ];
+        
+        function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+            const colors = ['var(--primary)', 'var(--accent)', 'var(--cyan)'];
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (6 + Math.random() * 6) + 's';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.width = (2 + Math.random() * 3) + 'px';
+                particle.style.height = particle.style.width;
+                container.appendChild(particle);
+            }
+        }
+        
+        function setTodayDate() {
+            const today = new Date();
+            const dateStr = today.toISOString().split('T')[0];
+            document.getElementById('inputTanggal').value = dateStr;
+        }
+        
+        function renderMarkets() {
+            const container = document.getElementById('marketList');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            const sortedMarkets = [...markets].sort((a, b) => {
+                const timeA = a.time.split(':').map(Number);
+                const timeB = b.time.split(':').map(Number);
+                return (timeA[0] * 60 + timeA[1]) - (timeB[0] * 60 + timeB[1]);
+            });
+            
+            sortedMarkets.forEach((market, index) => {
+                const div = document.createElement('div');
+                div.className = 'market-item flex items-center gap-4 px-5 py-4 border-b border-[var(--border)]/20';
+                div.style.animationDelay = `${index * 15}ms`;
+                div.classList.add('animate-fade-in');
+                div.style.opacity = '0';
+                
+                div.innerHTML = `
+                    <div onclick="toggleMarket(${market.id})" class="checkbox-custom flex-shrink-0 ${market.selected ? 'checkbox-marked' : ''}"></div>
+                    <div class="flex-1 min-w-0 cursor-pointer" onclick="selectForInput('${market.name}')">
+                        <div class="font-medium text-sm truncate hover:text-[var(--accent)] transition-colors">${market.name}</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-[var(--muted)] text-xs font-mono flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 6v6l4 2"></path>
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            ${market.time}
+                        </div>
+                        <button onclick="openEditModal(${market.id})" class="edit-btn p-2 rounded-lg hover:bg-amber-500/10 text-[var(--muted)] hover:text-amber-400 transition-all" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+            
+            updateSelectedMarketsDisplay();
+        }
+        
+        function toggleMarket(id) {
+            const market = markets.find(m => m.id === id);
+            if (market) {
+                market.selected = !market.selected;
+                renderMarkets();
+            }
+        }
+        
+        function selectForInput(name) {
+            document.getElementById('inputPasaran').value = name;
+            showNotification('Pasaran dipilih: ' + name);
+        }
+        
+        function updateSelectedMarketsDisplay() {
+            const selected = markets.filter(m => m.selected);
+            const textEl = document.getElementById('selectedMarketsText');
+            const listEl = document.getElementById('selectedMarketsList');
+            
+            if (selected.length === 0) {
+                textEl.classList.remove('hidden');
+                listEl.classList.add('hidden');
+            } else {
+                textEl.classList.add('hidden');
+                listEl.classList.remove('hidden');
+                listEl.innerHTML = selected.map(m => `
+                    <div class="selected-market-item flex items-center justify-between p-3 rounded-xl transition-all duration-300">
+                        <span class="font-medium text-sm">${m.name}</span>
+                        <span class="text-[var(--muted)] text-xs font-mono bg-white/5 px-2 py-1 rounded-md">${m.time}</span>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function openEditModal(id) {
+            editingMarketId = id;
+            const market = markets.find(m => m.id === id);
+            if (market) {
+                document.getElementById('editNama').value = market.name;
+                document.getElementById('editJam').value = market.time;
+                document.getElementById('editModal').classList.remove('hidden');
+                document.getElementById('editModal').classList.add('flex');
+            }
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+            document.getElementById('editModal').classList.remove('flex');
+            editingMarketId = null;
+        }
+        
+        function saveEdit() {
+            if (editingMarketId) {
+                const market = markets.find(m => m.id === editingMarketId);
+                if (market) {
+                    const newName = document.getElementById('editNama').value.trim();
+                    const newTime = document.getElementById('editJam').value;
+                    
+                    if (newName && newTime) {
+                        market.name = newName;
+                        market.time = newTime;
+                        renderMarkets();
+                        showNotification('Pasaran berhasil diperbarui');
+                        closeEditModal();
+                    } else {
+                        showNotification('Nama dan jam harus diisi', 'error');
+                    }
+                }
+            }
+        }
+        
+        function deleteMarket() {
+            if (editingMarketId && confirm('Hapus pasaran ini?')) {
+                markets = markets.filter(m => m.id !== editingMarketId);
+                renderMarkets();
+                showNotification('Pasaran berhasil dihapus');
+                closeEditModal();
+            }
+        }
+        
+        function openAddModal() {
+            document.getElementById('addNama').value = '';
+            document.getElementById('addJam').value = '';
+            document.getElementById('addModal').classList.remove('hidden');
+            document.getElementById('addModal').classList.add('flex');
+        }
+        
+        function closeAddModal() {
+            document.getElementById('addModal').classList.add('hidden');
+            document.getElementById('addModal').classList.remove('flex');
+        }
+        
+        function saveNewMarket() {
+            const name = document.getElementById('addNama').value.trim();
+            const time = document.getElementById('addJam').value;
+            
+            if (name && time) {
+                const newId = Math.max(...markets.map(m => m.id)) + 1;
+                markets.push({
+                    id: newId,
+                    name: name,
+                    time: time,
+                    selected: false
+                });
+                renderMarkets();
+                showNotification('Pasaran baru berhasil ditambahkan');
+                closeAddModal();
+            } else {
+                showNotification('Nama dan jam harus diisi', 'error');
+            }
+        }
+        
+        function importMarkets() {
+            document.getElementById('importFile').click();
+        }
+        
+        function handleImport(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const imported = JSON.parse(e.target.result);
+                        if (Array.isArray(imported)) {
+                            markets = imported;
+                            renderMarkets();
+                            showNotification('Data pasaran berhasil diimport');
+                        }
+                    } catch (err) {
+                        showNotification('Format file tidak valid', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+        
+        function getShio(lastTwoDigits) {
+            const num = parseInt(lastTwoDigits, 10);
+            for (const shio of shioData) {
+                if (shio.numbers.includes(lastTwoDigits)) {
+                    return shio;
+                }
+            }
+            return null;
+        }
+        
+        function updateShio() {
+            const prize1 = document.getElementById('prize1').value;
+            const shioResult = document.getElementById('shioResult');
+            
+            if (prize1.length >= 2) {
+                const lastTwo = prize1.slice(-2).padStart(2, '0');
+                const shio = getShio(lastTwo);
+                if (shio) {
+                    shioResult.innerHTML = `<span class="inline-flex items-center gap-2">${shio.name} <span class="text-xl">${String.fromCodePoint(parseInt(shio.emoji.replace('&#', '').replace(';', ''), 10))}</span></span>`;
+                } else {
+                    shioResult.textContent = '-';
+                }
+            } else {
+                shioResult.textContent = '-';
+            }
+        }
+        
+        function generateOutput() {
+            const pasaran = document.getElementById('inputPasaran').value;
+            const tanggal = document.getElementById('inputTanggal').value;
+            const prize1 = document.getElementById('prize1').value.padStart(4, '0');
+            const prize2 = document.getElementById('prize2').value.padStart(4, '0');
+            const prize3 = document.getElementById('prize3').value.padStart(4, '0');
+            
+            if (!pasaran || !prize1) {
+                showNotification('Nama pasaran dan Prize 1 harus diisi', 'error');
+                return;
+            }
+            
+            const lastTwo = prize1.slice(-2).padStart(2, '0');
+            const shio = getShio(lastTwo);
+            
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+                           'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const date = new Date(tanggal);
+            const dayName = days[date.getDay()];
+            const formattedDate = `Hari ${dayName}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+            
+            let output = `Hasil Pengeluaran ${pasaran}\n`;
+            output += `${formattedDate}\n`;
+            output += `Result 1 : ${prize1}, SHIO : ${shio ? shio.name.toUpperCase() : '-'}\n`;
+            
+            if (prize2 && prize2 !== '0000') {
+                const shio2 = getShio(prize2.slice(-2).padStart(2, '0'));
+                output += `Result 2 : ${prize2}, SHIO : ${shio2 ? shio2.name.toUpperCase() : '-'}\n`;
+            }
+            
+            if (prize3 && prize3 !== '0000') {
+                const shio3 = getShio(prize3.slice(-2).padStart(2, '0'));
+                output += `Result 3 : ${prize3}, SHIO : ${shio3 ? shio3.name.toUpperCase() : '-'}\n`;
+            }
+            
+            output += `\nSelamat Kepada Pemenang, Salam JP`;
+            
+            document.getElementById('outputArea').innerHTML = `<span class="text-[var(--fg)]">${output}</span>`;
+            showNotification('Output berhasil digenerate');
+        }
+        
+        function copyOutput() {
+            const outputEl = document.getElementById('outputArea');
+            const text = outputEl.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Output berhasil dicopy');
+            }).catch(() => {
+                showNotification('Gagal menyalin', 'error');
+            });
+        }
+
+        // =========================================
+        // LIVE DRAW SCRIPT (From livedraw.html)
+        // =========================================
+        const LD_STORAGE_KEY = 'citawin_ld_v5_backup';
+        
+        const ld_defaultMarkets = [
+            {id: 1, name: 'HOKIDRAW', url: 'https://hokidraw.com/live-draw.html', icon: '🎰', type: 'emoji'},
+            {id: 2, name: 'CHELSEA', url: 'https://chelseapools.co.uk/draw-result.html', icon: '⚽', type: 'emoji'},
+            {id: 3, name: 'POIPET', url: 'https://poipetlottery.com/liveresult', icon: '🎲', type: 'emoji'},
+            {id: 4, name: 'BANGKOK', url: 'https://bangkokpoolstoday.com/drawResult.html', icon: '🏙️', type: 'emoji'},
+            {id: 5, name: 'TOTOCAMBODIA', url: 'https://totocambodialive.com/live-draw.html', icon: '🦁', type: 'emoji'},
+        ];
+
+        let ld_markets = [];
+        let ld_activeMarket = null;
+        let ld_selectedIcon = null;
+        let ld_tempImage = null; 
+        let ld_iconTargetId = null;
+        let ld_sidebarVisible = true;
+
+        const ld_emojis = ['🎰','🎲','🎯','⚽','🏀','🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐙','🦑','🦈','🐬','🐳','🌻','🌸','🌺','🍀','🍁','🍂','🍄','🌈','⭐','🌟','✨','💫','🌙','☀️','🔥','💧','💎','💍','👑','🎩','🧢'];
+
+        (function ld_initLoad() {
+            try {
+                const saved = localStorage.getItem(LD_STORAGE_KEY);
+                if (saved) {
+                    ld_markets = JSON.parse(saved);
+                } else {
+                    ld_markets = [...ld_defaultMarkets];
+                    localStorage.setItem(LD_STORAGE_KEY, JSON.stringify(ld_markets));
+                }
+            } catch (e) {
+                console.error("Error loading LD data", e);
+                ld_markets = [...ld_defaultMarkets];
+            }
+        })();
+
+        function ld_saveData() {
+            try {
+                localStorage.setItem(LD_STORAGE_KEY, JSON.stringify(ld_markets));
+            } catch(e) {
+                alert("Gagal menyimpan! LocalStorage penuh atau error.");
+                console.error(e);
+            }
+        }
+
+        function ld_exportData() {
+            const dataStr = JSON.stringify(ld_markets, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "backup_pasaran_citawin.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showNotification("Data berhasil di-export!");
+        }
+
+        function ld_importData(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const imported = JSON.parse(e.target.result);
+                        if (Array.isArray(imported)) {
+                            ld_markets = imported;
+                            ld_saveData();
+                            ld_renderList();
+                            showNotification("Data berhasil di-import!");
+                        } else {
+                            alert("Format file salah!");
+                        }
+                    } catch (err) {
+                        alert("Gagal membaca file.");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function ld_renderList() {
+            const list = document.getElementById('ld_marketList');
+            list.innerHTML = '';
+            
+            ld_markets.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'market-item-ld' + (ld_activeMarket === m.id ? ' active-ld' : '');
+                
+                let iconHtml = '';
+                if(m.type === 'image') {
+                    iconHtml = `<img src="${m.icon}" alt="${m.name}">`;
+                } else {
+                    iconHtml = m.icon;
+                }
+
+                div.innerHTML = `
+                    <button class="market-btn-ld" onclick="ld_selectMarket(${m.id})">
+                        <div class="m-icon-ld">${iconHtml}</div>
+                        <div class="m-name-ld">${m.name}</div>
+                    </button>
+                    <div class="m-actions-ld">
+                        <button class="m-btn-small-ld btn-upload-ld" onclick="ld_openIconModal(${m.id})"><i class="fas fa-image"></i></button>
+                        <button class="m-btn-small-ld btn-delete-ld" onclick="ld_deleteMarket(${m.id})"><i class="fas fa-times"></i></button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function ld_selectMarket(id) {
+            ld_activeMarket = id;
+            const m = ld_markets.find(x => x.id === id);
+            
+            document.getElementById('ld_displayMarket').innerText = m.name;
+            document.getElementById('ld_displayUrlSmall').innerText = m.url.substring(0, 30) + '...';
+            document.getElementById('ld_liveFrame').src = m.url;
+            document.getElementById('ld_loading').classList.remove('hidden-ld');
+            
+            ld_renderList();
+        }
+
+        function ld_refreshLive() {
+            if(ld_activeMarket) {
+                document.getElementById('ld_liveFrame').src = document.getElementById('ld_liveFrame').src;
+                document.getElementById('ld_loading').classList.remove('hidden-ld');
+            } else {
+                alert('Pilih pasaran dulu!');
+            }
+        }
+
+        document.getElementById('ld_liveFrame').onload = () => document.getElementById('ld_loading').classList.add('hidden-ld');
+
+        function ld_toggleSidebar() {
+            const sb = document.getElementById('ld_sidebar');
+            if(ld_sidebarVisible) sb.classList.add('sidebar-hidden-ld');
+            else sb.classList.remove('sidebar-hidden-ld');
+            ld_sidebarVisible = !ld_sidebarVisible;
+        }
+
+        function ld_openModal(id) { 
+            document.getElementById(id).style.display = 'flex'; 
+            ld_tempImage = null; 
+            document.getElementById('ld_previewAddImg').style.display = 'none';
+            document.getElementById('ld_previewEditImg').style.display = 'none';
+        }
+        function ld_closeModal(id) { 
+            document.getElementById(id).style.display = 'none'; 
+            ld_selectedIcon = null;
+            document.getElementById('ld_fileInputAdd').value = '';
+            document.getElementById('ld_fileInputEdit').value = '';
+            document.querySelectorAll('.ld-emoji-item.selected-ld').forEach(e => e.classList.remove('selected-ld'));
+        }
+
+        function ld_generateEmojiGrids() {
+            const gridAdd = document.getElementById('ld_emojiGridAdd');
+            const gridEdit = document.getElementById('ld_emojiGridEdit');
+            const html = ld_emojis.map(e => `<div class="ld-emoji-item" onclick="ld_pickEmoji(this, '${e}')">${e}</div>`).join('');
+            gridAdd.innerHTML = html;
+            gridEdit.innerHTML = html;
+        }
+
+        function ld_pickEmoji(el, emoji) {
+            const parent = el.parentElement;
+            parent.querySelectorAll('.ld-emoji-item').forEach(i => i.classList.remove('selected-ld'));
+            el.classList.add('selected-ld');
+            ld_selectedIcon = emoji;
+            ld_tempImage = null; 
+            
+            const previewAdd = document.getElementById('ld_previewAddImg');
+            const previewEdit = document.getElementById('ld_previewEditImg');
+            if(previewAdd) previewAdd.style.display = 'none';
+            if(previewEdit) previewEdit.style.display = 'none';
+        }
+
+        function ld_previewAddImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('ld_previewAddImg');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    ld_tempImage = e.target.result;
+                    document.querySelectorAll('#ld_emojiGridAdd .ld-emoji-item.selected-ld').forEach(i => i.classList.remove('selected-ld'));
+                    ld_selectedIcon = null;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function ld_previewEditImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('ld_previewEditImg');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    ld_tempImage = e.target.result;
+                    document.querySelectorAll('#ld_emojiGridEdit .ld-emoji-item.selected-ld').forEach(i => i.classList.remove('selected-ld'));
+                    ld_selectedIcon = null;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function ld_saveNewMarket() {
+            const nama = document.getElementById('ld_inputNama').value.trim().toUpperCase();
+            const link = document.getElementById('ld_inputLink').value.trim();
+            
+            if(!nama || !link) { alert('Isi Nama dan Link!'); return; }
+            if(!ld_selectedIcon && !ld_tempImage) { alert('Pilih ikon Emoji atau Upload Gambar!'); return; }
+
+            const newMarket = {
+                id: Date.now(),
+                name: nama,
+                url: link,
+                icon: ld_tempImage ? ld_tempImage : ld_selectedIcon,
+                type: ld_tempImage ? 'image' : 'emoji'
+            };
+
+            ld_markets.push(newMarket);
+            ld_saveData();
+            ld_renderList();
+            ld_closeModal('ld_addModal');
+            document.getElementById('ld_inputNama').value = '';
+            document.getElementById('ld_inputLink').value = '';
+        }
+
+        function ld_deleteMarket(id) {
+            if(confirm('Hapus pasaran ini?')) {
+                ld_markets = ld_markets.filter(m => m.id !== id);
+                if(ld_activeMarket === id) {
+                    ld_activeMarket = null;
+                    document.getElementById('ld_liveFrame').src = '';
+                    document.getElementById('ld_displayMarket').innerText = 'Pilih Pasaran';
+                }
+                ld_saveData();
+                ld_renderList();
+            }
+        }
+
+        function ld_openIconModal(id) {
+            ld_iconTargetId = id;
+            ld_openModal('ld_iconModal');
+        }
+
+        function ld_saveIconChanges() {
+            if(!ld_selectedIcon && !ld_tempImage) { alert('Pilih ikon baru atau upload gambar!'); return; }
+            const m = ld_markets.find(x => x.id === ld_iconTargetId);
+            
+            if(ld_tempImage) {
+                m.icon = ld_tempImage;
+                m.type = 'image';
+            } else {
+                m.icon = ld_selectedIcon;
+                m.type = 'emoji';
+            }
+            
+            ld_saveData();
+            ld_renderList();
+            ld_closeModal('ld_iconModal');
+        }
+
+        function ld_saveEditLink() {
+            if(!ld_activeMarket) { alert('Tidak ada pasaran aktif!'); return; }
+            const newLink = document.getElementById('ld_editLinkInput').value.trim();
+            if(!newLink) return;
+            
+            const m = ld_markets.find(x => x.id === ld_activeMarket);
+            m.url = newLink;
+            ld_saveData();
+            
+            document.getElementById('ld_liveFrame').src = newLink;
+            document.getElementById('ld_loading').classList.remove('hidden-ld');
+            document.getElementById('ld_displayUrlSmall').innerText = newLink.substring(0, 30) + '...';
+            ld_closeModal('ld_editModal');
+        }
+
+        // =========================================
+        // INITIALIZE ALL
+        // =========================================
+        window.onload = function() {
+            // Result init
+            createParticles();
+            setTodayDate();
+            renderMarkets();
+            
+            // Live Draw init
+            ld_generateEmojiGrids();
+            ld_renderList();
+            
+            // Set active tab to Result
+            showTool('tool-result');
+        };
+    </script>
+
+    <!-- Modals for Result (must be outside tool containers) -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0" onclick="closeEditModal()"></div>
+        <div class="modal-content relative w-full max-w-md rounded-2xl shadow-2xl animate-slide-up">
+            <div class="p-6 card-header">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-semibold text-xl">Edit Pasaran</h3>
+                    <button onclick="closeEditModal()" class="p-2 rounded-xl hover:bg-white/5 transition-all text-[var(--muted)] hover:text-[var(--fg)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 space-y-5">
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Nama Pasaran</label>
+                    <input type="text" id="editNama" class="input-field w-full h-12 rounded-xl px-4 text-sm">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Jam Pasaran</label>
+                    <input type="time" id="editJam" class="input-field w-full h-12 rounded-xl px-4 text-sm">
+                </div>
+            </div>
+            <div class="p-6 border-t border-[var(--border)] flex gap-3">
+                <button onclick="deleteMarket()" class="flex-1 py-3 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50 transition-all font-medium text-sm">
+                    Hapus
+                </button>
+                <button onclick="closeEditModal()" class="flex-1 py-3 rounded-xl border border-[var(--border)] hover:bg-white/5 transition-all font-medium text-sm">
+                    Batal
+                </button>
+                <button onclick="saveEdit()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-[var(--bg)] hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm shadow-lg shadow-amber-500/20">
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0" onclick="closeAddModal()"></div>
+        <div class="modal-content relative w-full max-w-md rounded-2xl shadow-2xl animate-slide-up">
+            <div class="p-6 card-header">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-semibold text-xl">Tambah Pasaran Baru</h3>
+                    <button onclick="closeAddModal()" class="p-2 rounded-xl hover:bg-white/5 transition-all text-[var(--muted)] hover:text-[var(--fg)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 space-y-5">
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Nama Pasaran</label>
+                    <input type="text" id="addNama" class="input-field w-full h-12 rounded-xl px-4 text-sm" placeholder="Contoh: SINGAPORE">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Jam Pasaran</label>
+                    <input type="time" id="addJam" class="input-field w-full h-12 rounded-xl px-4 text-sm">
+                </div>
+            </div>
+            <div class="p-6 border-t border-[var(--border)] flex gap-3">
+                <button onclick="closeAddModal()" class="flex-1 py-3 rounded-xl border border-[var(--border)] hover:bg-white/5 transition-all font-medium text-sm">
+                    Batal
+                </button>
+                <button onclick="saveNewMarket()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-400 hover:to-emerald-500 transition-all font-medium text-sm shadow-lg shadow-emerald-500/20">
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-500 ease-out">
+        <div class="toast-container rounded-xl px-5 py-4 flex items-center gap-4">
+            <div id="toastIconContainer" class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                <svg id="toastIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400">
+                    <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+            </div>
+            <span id="toastMessage" class="text-sm font-medium"></span>
+        </div>
+    </div>
+</body>
+</html>
