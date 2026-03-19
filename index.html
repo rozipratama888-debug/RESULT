@@ -441,6 +441,7 @@
             border: 1px solid var(--border);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            color: #fff;
         }
         .input-field:focus {
             border-color: var(--accent);
@@ -1256,6 +1257,91 @@
         </div>
     </div>
 
+    <!-- Modals for Result -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0" onclick="closeEditModal()"></div>
+        <div class="modal-content relative w-full max-w-md rounded-2xl shadow-2xl animate-slide-up">
+            <div class="p-6 card-header">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-semibold text-xl">Edit Pasaran</h3>
+                    <button onclick="closeEditModal()" class="p-2 rounded-xl hover:bg-white/5 transition-all text-[var(--muted)] hover:text-[var(--fg)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 space-y-5">
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Nama Pasaran</label>
+                    <input type="text" id="editNama" class="input-field w-full h-12 rounded-xl px-4 text-sm">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Jam Pasaran</label>
+                    <input type="time" id="editJam" class="input-field w-full h-12 rounded-xl px-4 text-sm">
+                </div>
+            </div>
+            <div class="p-6 border-t border-[var(--border)] flex gap-3">
+                <button onclick="deleteMarket()" class="flex-1 py-3 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50 transition-all font-medium text-sm">
+                    Hapus
+                </button>
+                <button onclick="closeEditModal()" class="flex-1 py-3 rounded-xl border border-[var(--border)] hover:bg-white/5 transition-all font-medium text-sm">
+                    Batal
+                </button>
+                <button onclick="saveEdit()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-[var(--bg)] hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm shadow-lg shadow-amber-500/20">
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0" onclick="closeAddModal()"></div>
+        <div class="modal-content relative w-full max-w-md rounded-2xl shadow-2xl animate-slide-up">
+            <div class="p-6 card-header">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-semibold text-xl">Tambah Pasaran Baru</h3>
+                    <button onclick="closeAddModal()" class="p-2 rounded-xl hover:bg-white/5 transition-all text-[var(--muted)] hover:text-[var(--fg)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 space-y-5">
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Nama Pasaran</label>
+                    <input type="text" id="addNama" class="input-field w-full h-12 rounded-xl px-4 text-sm" placeholder="Contoh: SINGAPORE">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Jam Pasaran</label>
+                    <input type="time" id="addJam" class="input-field w-full h-12 rounded-xl px-4 text-sm">
+                </div>
+            </div>
+            <div class="p-6 border-t border-[var(--border)] flex gap-3">
+                <button onclick="closeAddModal()" class="flex-1 py-3 rounded-xl border border-[var(--border)] hover:bg-white/5 transition-all font-medium text-sm">
+                    Batal
+                </button>
+                <button onclick="saveNewMarket()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-400 hover:to-emerald-500 transition-all font-medium text-sm shadow-lg shadow-emerald-500/20">
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-500 ease-out">
+        <div class="toast-container rounded-xl px-5 py-4 flex items-center gap-4">
+            <div id="toastIconContainer" class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                <svg id="toastIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400">
+                    <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+            </div>
+            <span id="toastMessage" class="text-sm font-medium"></span>
+        </div>
+    </div>
+
     <!-- ========== SCRIPTS ========== -->
     <script>
         // =========================================
@@ -1266,7 +1352,11 @@
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             
             document.getElementById(toolId).classList.add('active');
-            event.target.classList.add('active');
+            // Find the button that triggered this (if possible via event) or find by matching text
+            const btns = document.querySelectorAll('.nav-btn');
+            btns.forEach(btn => {
+                if(btn.onclick.toString().includes(toolId)) btn.classList.add('active');
+            });
             
             // Trigger resize for iframe if needed
             if (toolId === 'tool-livedraw') {
@@ -1286,6 +1376,10 @@
         // =========================================
         // RESULT SCRIPT
         // =========================================
+        
+        // Key untuk LocalStorage
+        const RESULT_SELECTION_KEY = 'citawin_result_selection';
+        
         let markets = [
             { id: 1, name: "HOKIDRAW 8", time: "08:00", selected: false },
             { id: 2, name: "CALIFORNIA", time: "08:25", selected: false },
@@ -1380,6 +1474,33 @@
             { emoji: "&#128018;", name: "Monyet", numbers: ["11", "23", "35", "47", "59", "71", "83", "95"] },
             { emoji: "&#128016;", name: "Kambing", numbers: ["12", "24", "36", "48", "60", "72", "84", "96"] }
         ];
+
+        // --- FUNGSI BARU UNTUK SIMPAN & LOAD CENTANGAN ---
+        function saveResultSelection() {
+            // Ambil hanya ID dari pasaran yang selected: true
+            const selectedIds = markets.filter(m => m.selected).map(m => m.id);
+            // Simpan ke localStorage
+            localStorage.setItem(RESULT_SELECTION_KEY, JSON.stringify(selectedIds));
+        }
+
+        function loadResultSelection() {
+            const saved = localStorage.getItem(RESULT_SELECTION_KEY);
+            if (saved) {
+                try {
+                    const selectedIds = JSON.parse(saved);
+                    // Reset semua jadi false dulu
+                    markets.forEach(m => m.selected = false);
+                    // Tandai yang ada di list saved
+                    selectedIds.forEach(id => {
+                        const market = markets.find(m => m.id === id);
+                        if (market) market.selected = true;
+                    });
+                } catch (e) {
+                    console.error("Gagal load selection", e);
+                }
+            }
+        }
+        // --------------------------------------------------
         
         function createParticles() {
             const container = document.getElementById('particles');
@@ -1454,6 +1575,7 @@
             const market = markets.find(m => m.id === id);
             if (market) {
                 market.selected = !market.selected;
+                saveResultSelection(); // <-- SIMPAN KE LOCALSTORAGE SAAT DI CENTANG/HILANGKAN
                 renderMarkets();
             }
         }
@@ -1523,6 +1645,7 @@
         function deleteMarket() {
             if (editingMarketId && confirm('Hapus pasaran ini?')) {
                 markets = markets.filter(m => m.id !== editingMarketId);
+                saveResultSelection(); // <-- UPDATE LOCALSTORAGE JIKA ADA YANG DIHAPUS
                 renderMarkets();
                 showNotification('Pasaran berhasil dihapus');
                 closeEditModal();
@@ -1589,6 +1712,7 @@
                         const imported = JSON.parse(e.target.result);
                         if (Array.isArray(imported)) {
                             markets = imported;
+                            saveResultSelection(); // <-- UPDATE LOCALSTORAGE SETELAH IMPORT
                             renderMarkets();
                             showNotification('Data pasaran berhasil di-import!');
                         } else {
@@ -1972,6 +2096,7 @@
             // Result init
             createParticles();
             setTodayDate();
+            loadResultSelection(); // <-- PANGGIL FUNGSI LOAD DULU SEBELUM RENDER
             renderMarkets();
             
             // Live Draw init
@@ -1982,90 +2107,5 @@
             showTool('tool-result');
         };
     </script>
-
-    <!-- Modals for Result -->
-    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="modal-overlay absolute inset-0" onclick="closeEditModal()"></div>
-        <div class="modal-content relative w-full max-w-md rounded-2xl shadow-2xl animate-slide-up">
-            <div class="p-6 card-header">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-semibold text-xl">Edit Pasaran</h3>
-                    <button onclick="closeEditModal()" class="p-2 rounded-xl hover:bg-white/5 transition-all text-[var(--muted)] hover:text-[var(--fg)]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 6 6 18"></path>
-                            <path d="m6 6 12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="p-6 space-y-5">
-                <div class="space-y-2">
-                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Nama Pasaran</label>
-                    <input type="text" id="editNama" class="input-field w-full h-12 rounded-xl px-4 text-sm">
-                </div>
-                <div class="space-y-2">
-                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Jam Pasaran</label>
-                    <input type="time" id="editJam" class="input-field w-full h-12 rounded-xl px-4 text-sm">
-                </div>
-            </div>
-            <div class="p-6 border-t border-[var(--border)] flex gap-3">
-                <button onclick="deleteMarket()" class="flex-1 py-3 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50 transition-all font-medium text-sm">
-                    Hapus
-                </button>
-                <button onclick="closeEditModal()" class="flex-1 py-3 rounded-xl border border-[var(--border)] hover:bg-white/5 transition-all font-medium text-sm">
-                    Batal
-                </button>
-                <button onclick="saveEdit()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-[var(--bg)] hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm shadow-lg shadow-amber-500/20">
-                    Simpan
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="modal-overlay absolute inset-0" onclick="closeAddModal()"></div>
-        <div class="modal-content relative w-full max-w-md rounded-2xl shadow-2xl animate-slide-up">
-            <div class="p-6 card-header">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-semibold text-xl">Tambah Pasaran Baru</h3>
-                    <button onclick="closeAddModal()" class="p-2 rounded-xl hover:bg-white/5 transition-all text-[var(--muted)] hover:text-[var(--fg)]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 6 6 18"></path>
-                            <path d="m6 6 12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="p-6 space-y-5">
-                <div class="space-y-2">
-                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Nama Pasaran</label>
-                    <input type="text" id="addNama" class="input-field w-full h-12 rounded-xl px-4 text-sm" placeholder="Contoh: SINGAPORE">
-                </div>
-                <div class="space-y-2">
-                    <label class="text-xs uppercase tracking-wider text-[var(--muted)] font-medium">Jam Pasaran</label>
-                    <input type="time" id="addJam" class="input-field w-full h-12 rounded-xl px-4 text-sm">
-                </div>
-            </div>
-            <div class="p-6 border-t border-[var(--border)] flex gap-3">
-                <button onclick="closeAddModal()" class="flex-1 py-3 rounded-xl border border-[var(--border)] hover:bg-white/5 transition-all font-medium text-sm">
-                    Batal
-                </button>
-                <button onclick="saveNewMarket()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-400 hover:to-emerald-500 transition-all font-medium text-sm shadow-lg shadow-emerald-500/20">
-                    Tambah
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-500 ease-out">
-        <div class="toast-container rounded-xl px-5 py-4 flex items-center gap-4">
-            <div id="toastIconContainer" class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                <svg id="toastIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400">
-                    <path d="M20 6 9 17l-5-5"></path>
-                </svg>
-            </div>
-            <span id="toastMessage" class="text-sm font-medium"></span>
-        </div>
-    </div>
 </body>
 </html>
